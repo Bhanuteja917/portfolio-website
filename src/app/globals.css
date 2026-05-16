@@ -86,12 +86,14 @@
   --gradient-magenta: linear-gradient(135deg, #FF2E93 0%, #FF6FA8 60%, #FFB3C8 100%);
   --gradient-orange: linear-gradient(135deg, #FF5C2A 0%, #FF8A3D 55%, #FFC56A 100%);
   --gradient-coral: linear-gradient(135deg, #FF6B7A 0%, #FF9CAA 60%, #FFD3D9 100%);
+  --gradient-aws: linear-gradient(135deg, #00C6A0 0%, #0099C7 55%, #1A2980 100%);
 
   /* Spotlight palette — violet is the default */
   --spot-1: var(--gradient-violet);
   --spot-2: var(--gradient-orange);
   --spot-3: var(--gradient-magenta);
   --spot-4: var(--gradient-coral);
+  --spot-5: var(--gradient-aws);
 
   /* Typography */
   --font-display: "GT Walsheim", system-ui, sans-serif;

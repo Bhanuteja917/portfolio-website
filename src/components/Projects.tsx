@@ -13,9 +13,28 @@ export interface Project {
   gradient: string;
   kind: string;
   span: "wide" | "tall";
+  badge?: string;
+  links?: { label: string; href: string }[];
 }
 
 const PROJECTS: Project[] = [
+  {
+    id: "contract-guard",
+    title: "ContractGuard",
+    org: "AWS AIdeas Hackathon · 2025",
+    blurb:
+      "An AI platform that reads any contract and surfaces risk scores, red flags, and plain-English clause explanations — built for India's freelancers and SMBs who can't afford a lawyer. Serverless on AWS, powered by Bedrock.",
+    tags: ["AWS Bedrock", "Lambda", "Python", "React", "TypeScript", "DynamoDB", "CDK"],
+    metrics: [],
+    gradient: "var(--spot-5)",
+    kind: "Hackathon",
+    span: "wide",
+    badge: "🏆 Top 300 of 10,000+ submissions",
+    links: [
+      { label: "Live App ↗", href: "https://d3cel0medhyrga.cloudfront.net/" },
+      { label: "GitHub ↗", href: "https://github.com/Bhanuteja917/aideas-contract-guard" },
+    ],
+  },
   {
     id: "ubs-resource",
     title: "Resource analytics platform",
@@ -29,7 +48,7 @@ const PROJECTS: Project[] = [
     ],
     gradient: "var(--spot-1)",
     kind: "Internal platform",
-    span: "wide",
+    span: "tall",
   },
   {
     id: "catalog-ui",
@@ -200,6 +219,27 @@ function ProjectCard({ p, onOpen }: { p: Project; onOpen: (p: Project) => void }
         <div className="caption text-muted" style={{ marginBottom: 10 }}>
           {p.kind} · {p.org}
         </div>
+        {p.badge && (
+          <div
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 6,
+              padding: "4px 10px",
+              borderRadius: 100,
+              background: "rgba(255, 193, 7, 0.10)",
+              border: "1px solid rgba(255, 193, 7, 0.30)",
+              color: "#FFC107",
+              fontFamily: "var(--font-body, system-ui)",
+              fontSize: 12,
+              fontWeight: 500,
+              letterSpacing: "-0.12px",
+              marginBottom: 10,
+            }}
+          >
+            {p.badge}
+          </div>
+        )}
         <h3
           className="display-md"
           style={{ marginBottom: 10, fontSize: 28, lineHeight: 1.1, letterSpacing: "-1.2px" }}
@@ -229,6 +269,23 @@ function ProjectCard({ p, onOpen }: { p: Project; onOpen: (p: Project) => void }
             </span>
           ))}
         </div>
+        {p.links && p.links.length > 0 && (
+          <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
+            {p.links.map((l) => (
+              <a
+                key={l.href}
+                href={l.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={(e) => e.stopPropagation()}
+                className="btn btn--ghost"
+                style={{ fontSize: 13, padding: "7px 14px" }}
+              >
+                {l.label}
+              </a>
+            ))}
+          </div>
+        )}
       </div>
     </article>
   );
@@ -344,9 +401,22 @@ export function ProjectModal({ p, onClose }: { p: Project | null; onClose: () =>
             </span>
           ))}
         </div>
-        <button className="btn btn--primary" onClick={onClose}>
-          Close
-        </button>
+        <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+          {p.links?.map((l) => (
+            <a
+              key={l.href}
+              href={l.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn btn--secondary"
+            >
+              {l.label}
+            </a>
+          ))}
+          <button className="btn btn--primary" onClick={onClose}>
+            Close
+          </button>
+        </div>
       </div>
     </div>
   );
