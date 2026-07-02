@@ -32,7 +32,7 @@ export function Hero() {
         <div ref={ref}>
           <div className="eyebrow" style={{ marginBottom: 28 }}>
             <span className="dot" />
-            <span>Hyderabad · Available for side projects</span>
+            <span>Pune · Available for side projects</span>
           </div>
 
           <h1

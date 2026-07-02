@@ -20,7 +20,7 @@ export function About() {
         </div>
         <div style={{ paddingTop: 40 }}>
           <p className="body-lg" style={{ marginBottom: 20, color: "var(--color-ink)" }}>
-            I&apos;m a software engineer based in Hyderabad. By day I build cloud platforms at UBS
+            I&apos;m a software engineer based in Pune. By day I build cloud platforms at UBS
             — APIs in{" "}
             <span style={{ color: "var(--color-accent-blue)" }}>.NET</span>, dashboards in{" "}
             <span style={{ color: "var(--color-accent-blue)" }}>React</span>, the wiring in

@@ -21,12 +21,6 @@ const LINKS = [
     href: "https://www.linkedin.com/in/bhanuteja917/",
     primary: false,
   },
-  {
-    k: "Phone",
-    v: "+91 80749 86686",
-    href: "tel:+918074986686",
-    primary: false,
-  },
 ];
 
 /* ============================================================
@@ -193,7 +187,7 @@ export function Footer() {
             bhanu.
           </div>
           <div className="body-sm text-muted" style={{ marginTop: 14, maxWidth: 280 }}>
-            Software engineer in Hyderabad. Building cloud platforms, slick UIs, and the wiring
+            Software engineer in Pune. Building cloud platforms, slick UIs, and the wiring
             between.
           </div>
         </div>
