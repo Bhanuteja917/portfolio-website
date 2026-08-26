@@ -8,8 +8,6 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
-All commands run from `portfolio-website/`:
-
 ```bash
 npm run dev      # Start dev server at localhost:3000
 npm run build    # Production build
@@ -17,125 +15,47 @@ npm run start    # Start production server
 npm run lint     # ESLint (next core-web-vitals + typescript rules)
 ```
 
-No test runner is configured yet.
+No test runner is configured.
 
 ## Stack
 
-- **Next.js 16** — App Router, Server Components by default
-- **React 19** — hooks and composition patterns
+- **Next.js 16** — App Router
+- **React 19**
 - **TypeScript** — strict mode (`tsconfig.json`), `@/*` alias maps to `./src/*`
-- **Tailwind CSS v4** — imported via `@import "tailwindcss"` (not `@tailwind` directives)
+- **Tailwind CSS v4** — imported via `@import "tailwindcss"` in `globals.css` (not `@tailwind` directives), but see Styling below — Tailwind utilities are barely used in practice
+- No data-fetching library, form library, animation library, or state manager is installed. Don't add `SWR`/`TanStack Query`/`zod`/`Framer Motion`/`GSAP`/`Zustand` etc. unless the user asks — the site is fully static with no external data and hand-rolls its own animation primitives (see below).
 
 ## Architecture
 
-Single `src/app/` App Router project. Currently a scaffold — only `layout.tsx` and `page.tsx` exist under `src/app/`.
+This is a **single-page portfolio site**. Everything renders on one route:
 
-**Fonts**: Geist Sans and Geist Mono loaded via `next/font/google` in `layout.tsx`, exposed as CSS variables `--font-geist-sans` and `--font-geist-mono`, registered in `globals.css` under `@theme inline`.
+- `src/app/layout.tsx` — root layout, loads the Inter font via `next/font/google` as `--font-body`, sets metadata.
+- `src/app/page.tsx` — the entire page. `"use client"` at the top; composes every section (`Hero`, `Work`/`Projects`, `About`, `Now`, `Playground`, `Contact`) inside one `<main>`, wires up active-nav-section tracking via `IntersectionObserver`, and manages the open/closed project-modal state.
+- `src/components/*.tsx` — one file per page section (not per UI primitive). There is no `components/ui/`, `components/features/`, `hooks/`, `lib/`, or `types/` split — everything for a section (types, hardcoded content arrays, subcomponents, the exported section component) lives together in that section's file. Follow this pattern; don't invent the nested structure unless the user asks to restructure.
 
-**Design tokens**: Defined as CSS variables in `globals.css` under `:root`. Dark mode via `@media (prefers-color-scheme: dark)`. Tailwind v4 consumes them via `@theme inline { --color-background: var(--background); ... }`.
+**Every component is a Client Component** (`"use client"` at the top of every file in `src/components/`). This is not a "default to Server Components" codebase — nav highlighting, the custom cursor, reveal-on-scroll, and the project modal all need browser APIs and interactivity. Don't fight this by trying to introduce Server Components/Suspense boundaries unless asked.
 
-**Project structure to follow** as the portfolio grows:
+**Content is hardcoded in the components, not fetched.** Resume/project/experience data lives as typed literal arrays at the top of the relevant file (e.g. `PROJECTS: Project[]` in `Projects.tsx`, `ROLES` in `Work.tsx`). To update site content (a new project, a new role, new links), edit these arrays directly — there's no CMS, API route, or MDX source.
 
-```
-src/
-├── app/               # Pages, layouts, loading/error boundaries
-├── components/
-│   ├── ui/            # Primitive reusable components
-│   └── features/      # Feature-specific components
-├── hooks/             # Custom hooks (use* prefix)
-├── lib/               # Utilities, third-party wrappers
-├── types/             # Shared TypeScript types
-└── styles/
-    └── globals.css    # Tailwind base + CSS variables
-```
+**Animation is hand-rolled, not library-based**, in `src/components/Cursor.tsx`:
+- `Cursor` — custom cursor dot/ring/label driven by `requestAnimationFrame` + refs (disabled on coarse/touch pointers via `matchMedia("(hover: none)")`).
+- `Magnetic` — wraps a child and nudges it toward the cursor on mousemove.
+- `Reveal` — `IntersectionObserver`-based scroll-reveal; toggles a `.reveal.in` class defined in `globals.css` rather than using an animation library.
 
-## Code Rules
+Reuse these three primitives for new interactive/animated UI instead of pulling in Framer Motion or GSAP.
 
-### React & Next.js
-- Default to Server Components; add `"use client"` only for state, effects, event handlers, or browser APIs.
-- Use `SWR` or `TanStack Query` for client-side data fetching — no raw `useEffect` fetching.
-- Use `next/image` for all images, `next/font` for all fonts.
-- Wrap async/data-heavy components in error boundaries with skeleton `<Suspense>` fallbacks.
-- No prop drilling beyond 2 levels — use Context or Zustand.
+**Styling is a custom CSS design system, not Tailwind utilities.** `src/app/globals.css` defines:
+- Design tokens as CSS custom properties under `:root` (colors, gradients, the full type scale, spacing, radii, elevation, motion durations/easing).
+- Hand-written utility/component classes consumed throughout components: `.container`, `.section`, `.display-xxl`/`.display-xl`/.../`.caption`/`.micro` (type scale), `.btn`/`.btn--primary`/`.btn--secondary`/`.btn--ghost`, `.card`, `.tag`, `.eyebrow`, `.nav*`, `.marquee*`, `.reveal`.
+- `@font-face` declarations for the local GT Walsheim trial OTFs served from `public/fonts/` (display font, referenced via `--font-display`), separate from the Inter body font loaded through `next/font`.
 
-### TypeScript
-- No `any` — use `unknown` and narrow with type guards.
-- Use `type` for unions/intersections, `interface` for extendable object shapes.
-- Use `zod` for runtime validation of external data.
-- No `// @ts-ignore` — fix the type.
+Components mix these custom classes with **inline `style={{...}}` objects** (especially for one-off positioning/spacing) — this is the established convention here, not an anti-pattern to fix. When adding new UI, prefer reusing an existing class from `globals.css` over inventing a new Tailwind utility combination; use Tailwind utilities or new inline styles only where no existing class fits, matching the surrounding component's style.
 
-### Styling
-- Tailwind utility classes only; no inline styles for static values.
-- All design tokens via CSS variables in `globals.css`.
-- Always respect `prefers-reduced-motion`. Animate with `transform`/`opacity` only — never `width`, `height`, or positional properties.
+**Density/theming hooks**: `<html>` in `layout.tsx` carries a `density-roomy` class; `globals.css` also defines `density-compact` overrides for `.section`/`.card` padding. There is no dark-mode media query — the design is single (dark) themed via the `--color-canvas`/`--color-ink` tokens.
 
-| Animation use case | Tool |
-|---|---|
-| Hover states, micro-interactions | `tailwindcss-animate` |
-| Page transitions, gesture-based motion | Framer Motion |
-| Timeline/scroll-driven/SVG path | GSAP |
+## Deployment
 
-### Naming
-- Components: `PascalCase` files — `UserProfileCard.tsx`
-- Hooks: `camelCase` with `use` prefix — `useUserProfile.ts`
-- Non-component files: `kebab-case`
-- Constants: `SCREAMING_SNAKE_CASE`
-- Types/interfaces: `PascalCase`, no `I` prefix
-
-### Component design
-- Forward all standard HTML props on wrapper components via `React.ComponentPropsWithoutRef<'element'>`.
-- Extend via props/composition/slot patterns — don't modify existing internals.
-- Inject dependencies (API clients, services) via props or Context, never import directly inside a component.
-
-### Imports
-- Absolute imports via `@/` — `import { Button } from '@/components/ui/button'`
-- Barrel `index.ts` exports for component directories.
-- Sort: external packages → `@/` paths → relative paths.
-
-### Things never to do
-- `document.querySelector` inside React — use refs.
-- Mutate props or state directly.
-- `dangerouslySetInnerHTML` without sanitization.
-- Hardcode API URLs — use environment variables.
-- Array index as key for dynamic/reorderable lists.
-- `console.log` in committed code.
-- `// @ts-ignore` — fix the type properly.
-- `any` as a quick fix — narrow the type with guards or `unknown`.
-- Commit `.env` files or secrets.
-- Load fonts from external CDNs — use `next/font`.
-- Bare `<img>` tags for content images — use `next/image`.
-- `useEffect` for data fetching — use SWR or TanStack Query.
-
-## React Best Practices
-
-- **Co-locate state** — keep state as close to where it's used as possible; lift only when necessary.
-- **Composition over configuration** — prefer small, composable components over large prop-heavy ones.
-- **Memoization with intent** — use `useMemo`/`useCallback`/`memo` only for measurable performance concerns, not preemptively.
-- **Avoid side effects in render** — all side effects belong in `useEffect`, event handlers, or Server Actions.
-- **Discriminated unions** for state machines and multi-variant data shapes.
-- **Early returns** over nested conditionals.
-- **Pure functions** — same input always produces same output, no side effects.
-- Maximum function length ~40 lines; extract into smaller helpers beyond that.
-- No magic numbers — extract to named constants.
-
-## Performance
-
-- `next/dynamic` for heavy components not needed on initial load.
-- `content-visibility: auto` on long off-screen lists.
-- Batch DOM reads/writes — never read then write in a loop.
-- Audit bundle size with `@next/bundle-analyzer` when adding dependencies.
-- Animate with `transform`/`opacity` only — never `width`, `height`, or positional properties.
-
-## Accessibility
-
-- Semantic HTML: `<button>` for actions, `<a>` for navigation, `<header>`/`<nav>`/`<main>`/`<footer>` for structure.
-- All interactive elements must be keyboard-accessible (`Tab`, `Enter`, `Space`, `Escape`).
-- Visible `:focus-visible` ring on all focusable elements.
-- Every `<img>` gets `alt`; decorative images use `alt=""`.
-- Icon-only buttons require `aria-label`.
-- Form inputs require associated `<label>` elements.
-- Color alone must never convey meaning — pair with text or icon.
-- WCAG AA contrast: 4.5:1 for body text, 3:1 for large text.
+Deployed via Netlify (`netlify.toml`: `npm run build`, publishes `.next`, uses `@netlify/plugin-nextjs`). CI workflow lives at `.github/workflows/deploy.yml`.
 
 ## Git Commits
 
