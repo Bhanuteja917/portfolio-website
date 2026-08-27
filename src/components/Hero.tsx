@@ -8,7 +8,7 @@ const HERO_LINE = "Designing and building software, mostly at the edges.";
 const STATUS_ITEMS = [
   { label: "Currently", value: "Software Engineer", sub: "@ UBS, Pune" },
   { label: "Stack", value: ".NET · React", sub: "C#, TS, Azure" },
-  { label: "Years shipping", value: "1+", sub: "in production" },
+  { label: "Years shipping", value: "2+", sub: "in production" },
   { label: "Open to", value: "OSS & side-projects", sub: "say hi anytime" },
 ];
 
