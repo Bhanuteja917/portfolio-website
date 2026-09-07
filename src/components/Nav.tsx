@@ -7,7 +7,7 @@ interface NavProps {
   onNav: (name: string) => void;
 }
 
-const NAV_ITEMS = ["Work", "About", "Now", "Playground", "Contact"];
+const NAV_ITEMS = ["Work", "Experience", "About", "Contact"];
 
 export function Nav({ active, onNav }: NavProps) {
   return (

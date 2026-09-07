@@ -4,16 +4,23 @@ import { useState, useEffect } from "react";
 import { Cursor, Reveal } from "@/components/Cursor";
 import { Nav } from "@/components/Nav";
 import { Hero } from "@/components/Hero";
-import { WorkSection } from "@/components/Work";
+import {
+  Experience,
+  WhatIBuild,
+  Skills,
+  Recognition,
+  Collaborate,
+} from "@/components/Work";
 import { Projects, ProjectModal, type Project } from "@/components/Projects";
-import { About, Now, StackList } from "@/components/About";
+import { About, HowIBuild, Now, StackList } from "@/components/About";
 import { Playground } from "@/components/Playground";
 import { Contact, Footer } from "@/components/Contact";
 
-const SECTION_IDS = ["top", "work", "about", "now", "playground", "contact"] as const;
+const SECTION_IDS = ["top", "work", "experience", "about", "now", "playground", "contact"] as const;
 const SECTION_LABEL: Record<string, string> = {
   top: "Top",
   work: "Work",
+  experience: "Experience",
   about: "About",
   now: "Now",
   playground: "Playground",
@@ -22,6 +29,7 @@ const SECTION_LABEL: Record<string, string> = {
 const NAV_TO_ID: Record<string, string> = {
   Top: "top",
   Work: "work",
+  Experience: "experience",
   About: "about",
   Now: "now",
   Playground: "playground",
@@ -89,7 +97,36 @@ export default function Home() {
           <div className="container" style={{ marginBottom: 96 }}>
             <Projects onOpen={setOpen} />
           </div>
-          <WorkSection />
+        </section>
+
+        <section id="experience" className="section">
+          <div className="container">
+            <Experience />
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="container">
+            <WhatIBuild />
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="container">
+            <Skills />
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="container">
+            <Recognition />
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="container">
+            <HowIBuild />
+          </div>
         </section>
 
         <section id="about" className="section">
@@ -113,6 +150,12 @@ export default function Home() {
         <section id="playground" className="section">
           <div className="container">
             <Playground />
+          </div>
+        </section>
+
+        <section className="section">
+          <div className="container">
+            <Collaborate />
           </div>
         </section>
 

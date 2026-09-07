@@ -49,6 +49,83 @@ export function About() {
 }
 
 /* ============================================================
+   How I Build
+   ============================================================ */
+const PRINCIPLES = [
+  { k: "Small PRs", v: "Easier to review, easier to revert, easier to reason about." },
+  { k: "Tests", v: "When they earn their keep — confidence at the boundaries, not coverage for its own sake." },
+  { k: "Comments", v: "Why, not what. The code already says what." },
+];
+
+export function HowIBuild() {
+  return (
+    <Reveal>
+      <div style={{ marginBottom: 32 }}>
+        <div className="eyebrow" style={{ marginBottom: 14 }}>
+          How I build
+        </div>
+        <h3 className="display-lg" style={{ maxWidth: 720 }}>
+          A few things I hold to.
+        </h3>
+      </div>
+
+      <div
+        className="how-grid"
+        style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 20 }}
+      >
+        <div className="card" style={{ padding: 30, display: "grid", gap: 20 }}>
+          {PRINCIPLES.map((p, i) => (
+            <div key={i}>
+              <div
+                className="display-md"
+                style={{ fontSize: 20, lineHeight: 1.2, letterSpacing: "-0.7px", marginBottom: 6 }}
+              >
+                {p.k}
+              </div>
+              <div className="body-sm text-muted">{p.v}</div>
+            </div>
+          ))}
+        </div>
+
+        <div
+          className="card"
+          style={{
+            padding: 30,
+            background: "var(--spot-1)",
+            color: "#fff",
+            position: "relative",
+            overflow: "hidden",
+            borderRadius: 30,
+            boxShadow: "inset 0 0.5px 0 rgba(255,255,255,0.20), 0 16px 40px rgba(0,0,0,0.4)",
+          }}
+        >
+          <div className="caption" style={{ color: "rgba(255,255,255,0.75)", marginBottom: 14 }}>
+            One-line philosophy
+          </div>
+          <div
+            style={{
+              fontFamily: "var(--font-display)",
+              fontWeight: 500,
+              fontSize: 32,
+              lineHeight: 1.05,
+              letterSpacing: "-1.4px",
+              color: "#fff",
+            }}
+          >
+            Ship the small thing this week. Make it good enough that the next one wants to exist.
+          </div>
+        </div>
+      </div>
+      <style>{`
+        @media (max-width: 820px) {
+          .how-grid { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
+    </Reveal>
+  );
+}
+
+/* ============================================================
    Now
    ============================================================ */
 const NOW_ITEMS = [

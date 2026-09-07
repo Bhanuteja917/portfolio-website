@@ -7,14 +7,6 @@ const COLS = 56;
 const ROWS = 22;
 const CHARS = " ·:+*#%@".split("");
 
-const FACTS = [
-  { k: "Tabs", v: "Spaces — fight me" },
-  { k: "PRs", v: "Small, often, with stories" },
-  { k: "Tests", v: "When they earn their keep" },
-  { k: "Comments", v: "Why, not what" },
-  { k: "Side keys", v: "Caps Lock → Esc" },
-];
-
 export function Playground() {
   const ref = useRef<HTMLDivElement>(null);
   const [mouse, setMouse] = useState({ x: -100, y: -100 });
@@ -74,122 +66,53 @@ export function Playground() {
       </div>
 
       <div
-        className="play-grid"
-        style={{ display: "grid", gridTemplateColumns: "1.4fr 1fr", gap: 20 }}
+        ref={ref}
+        data-cursor="ripple"
+        style={{
+          background: "var(--color-surface-1)",
+          borderRadius: 30,
+          padding: 30,
+          position: "relative",
+          overflow: "hidden",
+          minHeight: 460,
+          display: "flex",
+          flexDirection: "column",
+        }}
       >
-        {/* ASCII field */}
-        <div
-          ref={ref}
-          data-cursor="ripple"
+        <pre
           style={{
-            background: "var(--color-surface-1)",
-            borderRadius: 30,
-            padding: 30,
-            position: "relative",
-            overflow: "hidden",
-            minHeight: 460,
+            fontFamily: "ui-monospace, 'SF Mono', Menlo, Consolas, monospace",
+            fontSize: 13,
+            lineHeight: 1.15,
+            letterSpacing: 0,
+            color: "var(--color-ink)",
+            margin: 0,
+            whiteSpace: "pre",
+            userSelect: "none",
+            flex: 1,
             display: "flex",
-            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            textAlign: "center",
           }}
         >
-          <pre
-            style={{
-              fontFamily: "ui-monospace, 'SF Mono', Menlo, Consolas, monospace",
-              fontSize: 13,
-              lineHeight: 1.15,
-              letterSpacing: 0,
-              color: "var(--color-ink)",
-              margin: 0,
-              whiteSpace: "pre",
-              userSelect: "none",
-              flex: 1,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              textAlign: "center",
-            }}
-          >
-            {ascii.join("\n")}
-          </pre>
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-end",
-              marginTop: 16,
-            }}
-          >
-            <div className="caption text-muted">ascii / cursor field</div>
-            <div className="micro text-muted tnum">
-              {Math.floor(mouse.x).toString().padStart(2, "0")},{" "}
-              {Math.floor(mouse.y).toString().padStart(2, "0")}
-            </div>
-          </div>
-        </div>
-
-        {/* Right column */}
-        <div style={{ display: "grid", gap: 20 }}>
-          <div className="card" style={{ padding: 30 }}>
-            <div className="caption text-muted" style={{ marginBottom: 16 }}>
-              Engineering opinions
-            </div>
-            <div style={{ display: "grid", gap: 12 }}>
-              {FACTS.map((f, i) => (
-                <div
-                  key={i}
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "100px 1fr",
-                    alignItems: "baseline",
-                    gap: 16,
-                  }}
-                >
-                  <div className="body-sm text-muted">{f.k}</div>
-                  <div className="body" style={{ color: "var(--color-ink)" }}>
-                    {f.v}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div
-            className="card"
-            style={{
-              padding: 30,
-              background: "var(--spot-1)",
-              color: "#fff",
-              position: "relative",
-              overflow: "hidden",
-              borderRadius: 30,
-              boxShadow:
-                "inset 0 0.5px 0 rgba(255,255,255,0.20), 0 16px 40px rgba(0,0,0,0.4)",
-            }}
-          >
-            <div className="caption" style={{ color: "rgba(255,255,255,0.75)", marginBottom: 14 }}>
-              One-line philosophy
-            </div>
-            <div
-              style={{
-                fontFamily: "var(--font-display)",
-                fontWeight: 500,
-                fontSize: 32,
-                lineHeight: 1.05,
-                letterSpacing: "-1.4px",
-                color: "#fff",
-              }}
-            >
-              Ship the small thing this week. Make it good enough that the next one wants to exist.
-            </div>
+          {ascii.join("\n")}
+        </pre>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "flex-end",
+            marginTop: 16,
+          }}
+        >
+          <div className="caption text-muted">ascii / cursor field</div>
+          <div className="micro text-muted tnum">
+            {Math.floor(mouse.x).toString().padStart(2, "0")},{" "}
+            {Math.floor(mouse.y).toString().padStart(2, "0")}
           </div>
         </div>
       </div>
-
-      <style>{`
-        @media (max-width: 920px) {
-          .play-grid { grid-template-columns: 1fr !important; }
-        }
-      `}</style>
     </Reveal>
   );
 }

@@ -13,10 +13,10 @@ const ROLES = [
     period: "Aug 2024 — Present",
     current: true,
     bullets: [
-      "Engineered a cloud-based resource analytics platform that processes infra usage data and surfaces an estimated ~40% cut in cloud operational costs.",
-      "Cut average API response times by 30% across critical backend services by re-shaping high-throughput .NET Core REST endpoints.",
+      "Engineered a cloud-based resource analytics platform that processes infrastructure usage data across teams, surfacing an estimated $60K in annual cloud cost savings opportunities.",
+      "Re-shaped high-throughput .NET Core REST endpoints, cutting average API response times by 30% across critical backend services.",
       "Shipped interactive ReactJS dashboards that turn raw telemetry into something engineering leads actually use to make decisions.",
-      "Owned GitLab CI/CD pipelines — automated build/test/deploy and reduced deployment cycle time by 30%.",
+      "Owned GitLab CI/CD pipelines for automated build, test and deployment workflows, reducing deployment cycle time by 30%.",
     ],
   },
   {
@@ -43,7 +43,7 @@ const ROLES = [
   },
 ];
 
-function Experience() {
+export function Experience() {
   return (
     <Reveal>
       <div style={{ marginBottom: 48 }}>
@@ -145,29 +145,91 @@ function Experience() {
 }
 
 /* ============================================================
+   What I Build
+   ============================================================ */
+const BUILD_AREAS = [
+  { title: "Backend", tags: [".NET", "REST APIs", "Performance", "Service design"] },
+  { title: "Cloud", tags: ["Azure", "AWS", "CI/CD", "Serverless"] },
+  { title: "Product", tags: ["React", "TypeScript", "Enterprise interfaces"] },
+];
+
+export function WhatIBuild() {
+  return (
+    <Reveal>
+      <div style={{ marginBottom: 32 }}>
+        <div className="eyebrow" style={{ marginBottom: 14 }}>
+          What I build
+        </div>
+        <h3 className="display-lg" style={{ maxWidth: 720 }}>
+          Across the stack, on purpose.
+        </h3>
+      </div>
+
+      <div
+        style={{
+          display: "grid",
+          gap: 1,
+          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          background: "var(--color-hairline)",
+          border: "1px solid var(--color-hairline)",
+          borderRadius: 20,
+          overflow: "hidden",
+          marginBottom: 24,
+        }}
+      >
+        {BUILD_AREAS.map((g, i) => (
+          <div key={i} style={{ background: "var(--color-canvas)", padding: 28 }}>
+            <div className="caption text-muted" style={{ marginBottom: 18 }}>
+              {g.title}
+            </div>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+              {g.tags.map((t) => (
+                <span key={t} className="tag">
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <p className="body-lg text-muted" style={{ maxWidth: 620 }}>
+        I build across the stack — from backend services and cloud infrastructure to the
+        interfaces people actually use.
+      </p>
+    </Reveal>
+  );
+}
+
+/* ============================================================
    Skills
    ============================================================ */
 const SKILL_GROUPS = [
   {
-    title: "Languages & Frameworks",
-    tags: ["C#", ".NET Core", "ASP.NET", "Entity Framework", "TypeScript", "JavaScript", "ReactJS", "Vue.js", "HTML", "CSS", "SQL"],
+    title: "Core Engineering",
+    tags: ["C#", ".NET / ASP.NET Core", "REST APIs", "React", "TypeScript", "SQL"],
   },
   {
-    title: "Cloud & DevOps",
-    tags: ["Azure App Service", "Azure Functions", "ARM", "GitLab CI/CD", "Bash"],
+    title: "Cloud & Delivery",
+    tags: ["Azure", "Azure Functions", "App Service", "GitLab CI/CD"],
   },
   {
-    title: "Practice",
-    tags: ["Agile / Scrum", "TDD", "REST API design", "Microservices", "Code review"],
+    title: "Engineering Practices",
+    tags: ["API Design", "TDD", "Microservices", "Code Review", "Agile / Scrum"],
+  },
+  {
+    title: "Familiar",
+    tags: ["Vue.js", "Bash", "Entity Framework"],
   },
 ];
 
-const LEARNING = [
-  "LangChain", "Next.js 15", "Bun", "Postgres pgvector", "RSC",
-  "OpenAI Realtime", "Claude Sonnet", "Drizzle", "Server-sent events", "Tailwind v4", "Effect.ts",
+const LEARNING_GROUPS = [
+  { title: "AI application engineering", tags: ["LangChain", "OpenAI Realtime", "Postgres pgvector"] },
+  { title: "Modern web architecture", tags: ["Next.js 15", "RSC", "Tailwind v4"] },
+  { title: "TypeScript ecosystem", tags: ["Bun", "Drizzle", "Effect.ts"] },
 ];
 
-function Skills() {
+export function Skills() {
   return (
     <Reveal>
       <div style={{ marginBottom: 32 }}>
@@ -183,7 +245,7 @@ function Skills() {
         style={{
           display: "grid",
           gap: 1,
-          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
           background: "var(--color-hairline)",
           border: "1px solid var(--color-hairline)",
           borderRadius: 20,
@@ -208,37 +270,33 @@ function Skills() {
 
       <div style={{ marginTop: 48 }}>
         <div className="caption text-muted" style={{ marginBottom: 14, paddingLeft: 4 }}>
-          Currently learning · keeping the edge sharp
+          Currently exploring
         </div>
-        <div className="marquee">
-          <div className="marquee-track">
-            {[...LEARNING, ...LEARNING].map((t, i) => (
-              <div
-                key={i}
-                style={{
-                  fontFamily: "var(--font-display)",
-                  fontWeight: 500,
-                  fontSize: 36,
-                  letterSpacing: "-1.4px",
-                  color: i % 3 === 0 ? "var(--color-ink)" : "var(--color-ink-muted)",
-                  whiteSpace: "nowrap",
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 40,
-                }}
-              >
-                {t}
-                <span
-                  style={{
-                    width: 6,
-                    height: 6,
-                    borderRadius: "50%",
-                    background: "var(--color-hairline)",
-                  }}
-                />
+        <div
+          style={{
+            display: "grid",
+            gap: 1,
+            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+            background: "var(--color-hairline)",
+            border: "1px solid var(--color-hairline)",
+            borderRadius: 20,
+            overflow: "hidden",
+          }}
+        >
+          {LEARNING_GROUPS.map((g, i) => (
+            <div key={i} style={{ background: "var(--color-canvas)", padding: 28 }}>
+              <div className="caption text-muted" style={{ marginBottom: 18 }}>
+                {g.title}
               </div>
-            ))}
-          </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                {g.tags.map((t) => (
+                  <span key={t} className="tag">
+                    {t}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </Reveal>
@@ -246,22 +304,18 @@ function Skills() {
 }
 
 /* ============================================================
-   Certifications
+   Recognition
    ============================================================ */
-const CERTS = [
+const RECOGNITIONS = [
   {
-    title: "Microsoft Certified: Azure Fundamentals",
-    issuer: "Microsoft",
-    year: "2024",
+    icon: "🏆",
+    title: "AWS AIdeas — Top 300 of 10,000+",
+    issuer: "AWS",
+    year: "2025",
     gradient: "var(--spot-1)",
   },
   {
-    title: "Java Database Connectivity (JDBC)",
-    issuer: "Coursera",
-    year: "2023",
-    gradient: "var(--spot-2)",
-  },
-  {
+    icon: "🎓",
     title: "Shiv Nadar Foundation Scholarship",
     issuer: "SNU",
     year: "2020 — 2024",
@@ -269,51 +323,106 @@ const CERTS = [
   },
 ];
 
-function Certifications() {
+const CERTIFICATIONS = [
+  {
+    title: "Microsoft Certified: Azure Fundamentals",
+    issuer: "Microsoft",
+    year: "2024",
+    gradient: "var(--spot-2)",
+  },
+];
+
+function RecognitionCard({
+  title,
+  issuer,
+  year,
+  gradient,
+  icon,
+}: {
+  title: string;
+  issuer: string;
+  year: string;
+  gradient: string;
+  icon?: string;
+}) {
+  return (
+    <div
+      className="card"
+      style={{ padding: 24, background: "var(--color-surface-1)", position: "relative", overflow: "hidden" }}
+    >
+      <div
+        style={{
+          width: 56,
+          height: 56,
+          borderRadius: 16,
+          background: gradient,
+          marginBottom: 28,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          fontSize: 22,
+          boxShadow: "inset 0 0.5px 0 rgba(255,255,255,0.20), 0 8px 24px rgba(0,0,0,0.4)",
+        }}
+      >
+        {icon}
+      </div>
+      <div
+        className="display-md"
+        style={{ marginBottom: 8, fontSize: 22, lineHeight: 1.2, letterSpacing: "-0.8px" }}
+      >
+        {title}
+      </div>
+      <div className="body-sm text-muted">
+        {issuer} · {year}
+      </div>
+    </div>
+  );
+}
+
+export function Recognition() {
   return (
     <Reveal>
       <div style={{ marginBottom: 32 }}>
         <div className="eyebrow" style={{ marginBottom: 14 }}>
-          Certifications &amp; honors
+          Recognition &amp; certifications
         </div>
         <h3 className="display-lg" style={{ maxWidth: 720 }}>
           Receipts.
         </h3>
       </div>
-      <div
-        style={{
-          display: "grid",
-          gap: 20,
-          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-        }}
-      >
-        {CERTS.map((c, i) => (
-          <div
-            key={i}
-            className="card"
-            style={{ padding: 24, background: "var(--color-surface-1)", position: "relative", overflow: "hidden" }}
-          >
-            <div
-              style={{
-                width: 56,
-                height: 56,
-                borderRadius: 16,
-                background: c.gradient,
-                marginBottom: 28,
-                boxShadow: "inset 0 0.5px 0 rgba(255,255,255,0.20), 0 8px 24px rgba(0,0,0,0.4)",
-              }}
-            />
-            <div
-              className="display-md"
-              style={{ marginBottom: 8, fontSize: 22, lineHeight: 1.2, letterSpacing: "-0.8px" }}
-            >
-              {c.title}
-            </div>
-            <div className="body-sm text-muted">
-              {c.issuer} · {c.year}
-            </div>
-          </div>
-        ))}
+
+      <div style={{ marginBottom: 40 }}>
+        <div className="caption text-muted" style={{ marginBottom: 18 }}>
+          Recognition
+        </div>
+        <div
+          style={{
+            display: "grid",
+            gap: 20,
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+          }}
+        >
+          {RECOGNITIONS.map((c, i) => (
+            <RecognitionCard key={i} {...c} />
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <div className="caption text-muted" style={{ marginBottom: 18 }}>
+          Certification
+        </div>
+        <div
+          style={{
+            display: "grid",
+            gap: 20,
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+          }}
+        >
+          {CERTIFICATIONS.map((c, i) => (
+            <RecognitionCard key={i} {...c} />
+          ))}
+        </div>
       </div>
     </Reveal>
   );
@@ -337,7 +446,7 @@ const LOOKING_FOR = [
   },
 ];
 
-function Collaborate() {
+export function Collaborate() {
   return (
     <Reveal>
       <div
@@ -439,21 +548,5 @@ function Collaborate() {
         </div>
       </div>
     </Reveal>
-  );
-}
-
-/* ============================================================
-   WorkSection — wraps all subsections
-   ============================================================ */
-export function WorkSection() {
-  return (
-    <section className="section">
-      <div className="container" style={{ display: "grid", gap: 96, minWidth: 0 }}>
-        <Experience />
-        <Skills />
-        <Certifications />
-        <Collaborate />
-      </div>
-    </section>
   );
 }
