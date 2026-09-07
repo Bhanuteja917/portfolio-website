@@ -1,6 +1,7 @@
 "use client";
 
 import { Reveal } from "@/components/Cursor";
+import { RESUME_URL } from "@/lib/constants";
 
 const LINKS = [
   {
@@ -10,15 +11,21 @@ const LINKS = [
     primary: true,
   },
   {
+    k: "LinkedIn",
+    v: "linkedin.com/in/bhanuteja917",
+    href: "https://www.linkedin.com/in/bhanuteja917/",
+    primary: false,
+  },
+  {
     k: "GitHub",
     v: "github.com/bhanuteja917",
     href: "https://github.com/bhanuteja917",
     primary: false,
   },
   {
-    k: "LinkedIn",
-    v: "linkedin.com/in/bhanuteja917",
-    href: "https://www.linkedin.com/in/bhanuteja917/",
+    k: "Résumé",
+    v: "Download PDF",
+    href: RESUME_URL,
     primary: false,
   },
 ];
@@ -30,13 +37,17 @@ export function Contact() {
   return (
     <Reveal>
       <div style={{ position: "relative" }}>
+        <div className="eyebrow" style={{ marginBottom: 14 }}>
+          <span className="dot" />
+          <span>Interested in working together?</span>
+        </div>
         <h2 className="display-xxl" style={{ maxWidth: 1100, marginBottom: 40 }}>
           Let&apos;s build something{" "}
           <span className="text-muted">together.</span>
         </h2>
         <p className="body-lg text-muted" style={{ maxWidth: 540, marginBottom: 48 }}>
-          The fastest way is email. I read everything; I reply to most. Pull requests welcome on any
-          of the projects above.
+          Open to Software Engineering roles — the fastest way to reach me is email. I read
+          everything; I reply to most.
         </p>
 
         <div
@@ -196,6 +207,7 @@ export function Footer() {
           title="Site"
           items={[
             { k: "Work", href: "#work" },
+            { k: "Experience", href: "#experience" },
             { k: "About", href: "#about" },
             { k: "Now", href: "#now" },
             { k: "Playground", href: "#playground" },
