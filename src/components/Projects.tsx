@@ -3,6 +3,14 @@
 import { useState, useEffect, useRef, type MouseEvent } from "react";
 import { Reveal } from "@/components/Cursor";
 
+export interface DeepDive {
+  problem: string;
+  contribution: string;
+  architecture?: string[];
+  decision: string;
+  result: string;
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -15,6 +23,7 @@ export interface Project {
   span: "wide" | "tall";
   badge?: string;
   links?: { label: string; href: string }[];
+  deepDive?: DeepDive;
 }
 
 const PROJECTS: Project[] = [
@@ -34,6 +43,16 @@ const PROJECTS: Project[] = [
       { label: "Live App ↗", href: "https://d3cel0medhyrga.cloudfront.net/" },
       { label: "GitHub ↗", href: "https://github.com/Bhanuteja917/aideas-contract-guard" },
     ],
+    deepDive: {
+      problem:
+        "India's freelancers and SMBs sign contracts they can't afford a lawyer to review — and the risk hides in the fine print.",
+      contribution:
+        "Built the platform end-to-end: the serverless AWS backend, the Bedrock-powered contract analysis pipeline, and the React frontend that surfaces risk scores and plain-English clause explanations.",
+      architecture: ["React UI", "API Gateway", "Lambda", "AWS Bedrock", "DynamoDB / S3"],
+      decision:
+        "Lambda + API Gateway for a pay-per-use serverless backend since traffic is bursty and unpredictable. Bedrock so the underlying model stays managed and swappable. DynamoDB for low-latency reads on parsed clause data. CDK to keep the whole stack as versioned, reproducible infrastructure.",
+      result: "Top 300 of 10,000+ submissions at the AWS AIdeas Hackathon.",
+    },
   },
   {
     id: "ubs-resource",
@@ -43,19 +62,28 @@ const PROJECTS: Project[] = [
       "A cloud-resource observability tool that ingests infra usage signals across teams and surfaces where the money is leaking.",
     tags: [".NET Core", "ReactJS", "Azure", "GitLab CI"],
     metrics: [
-      { v: "~40%", k: "potential cloud cost reduction flagged" },
+      { v: "$60K", k: "est. annual cloud cost savings flagged" },
       { v: "30%", k: "API response time improvement" },
     ],
     gradient: "var(--spot-1)",
     kind: "Internal platform",
     span: "tall",
+    deepDive: {
+      problem:
+        "UBS infrastructure spend was hard to attribute — usage signals were scattered across teams with no single view of where cloud budget was going.",
+      contribution:
+        "Owned the platform end-to-end: the .NET Core ingestion services, the data model for infra usage signals, and the ReactJS dashboards that surface cost and performance data to engineering leads.",
+      decision:
+        "Re-shaped the high-throughput REST endpoints rather than standing up a separate analytics database — kept the system simpler to operate once the queries were right-sized.",
+      result: "Flagged an estimated $60K in annual cloud cost savings opportunities and cut API response times by 30%.",
+    },
   },
   {
     id: "catalog-ui",
     title: "Enterprise catalog UI",
     org: "UBS · 2024",
     blurb:
-      "Responsive catalog interface with 50+ reusable components — forms, data grids, modal dialogs — typed end-to-end.",
+      "Responsive catalog interface with 50+ reusable components — forms, data grids, modal dialogs — typed end-to-end, cutting duplicated UI implementation across enterprise workflows.",
     tags: ["React 18", "TypeScript", ".NET REST"],
     metrics: [
       { v: "50+", k: "reusable components" },
@@ -86,7 +114,7 @@ const PROJECTS: Project[] = [
     tags: ["Next.js", "TypeScript", "Tailwind CSS"],
     metrics: [],
     gradient: "var(--spot-4)",
-    kind: "Meta",
+    kind: "Built this site",
     span: "wide",
   },
 ];
@@ -292,6 +320,79 @@ function ProjectCard({ p, onOpen }: { p: Project; onOpen: (p: Project) => void }
 }
 
 /* ============================================================
+   DeepDive — technical case-study block inside the modal
+   ============================================================ */
+function ArchitectureFlow({ stages }: { stages: string[] }) {
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        alignItems: "center",
+        gap: 10,
+        marginBottom: 24,
+      }}
+    >
+      {stages.map((s, i) => (
+        <div key={s} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div
+            style={{
+              background: "var(--color-canvas)",
+              border: "1px solid var(--color-hairline)",
+              borderRadius: 12,
+              padding: "10px 16px",
+              fontFamily: "var(--font-body, system-ui)",
+              fontSize: 13,
+              fontWeight: 500,
+              letterSpacing: "-0.12px",
+              color: "var(--color-ink)",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {s}
+          </div>
+          {i < stages.length - 1 && (
+            <span className="text-muted" aria-hidden="true">
+              →
+            </span>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function DeepDive({ d }: { d: DeepDive }) {
+  const rows: { label: string; text: string }[] = [
+    { label: "Problem", text: d.problem },
+    { label: "My contribution", text: d.contribution },
+    { label: "Key technical decision", text: d.decision },
+    { label: "Result", text: d.result },
+  ];
+
+  return (
+    <div style={{ marginBottom: 24 }}>
+      <div className="caption text-muted" style={{ marginBottom: 16 }}>
+        Technical deep dive
+      </div>
+      {d.architecture && <ArchitectureFlow stages={d.architecture} />}
+      <div style={{ display: "grid", gap: 18 }}>
+        {rows.map((r) => (
+          <div key={r.label}>
+            <div className="body-sm text-muted" style={{ marginBottom: 4 }}>
+              {r.label}
+            </div>
+            <div className="body" style={{ color: "var(--color-ink)" }}>
+              {r.text}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================
    ProjectModal
    ============================================================ */
 export function ProjectModal({ p, onClose }: { p: Project | null; onClose: () => void }) {
@@ -401,6 +502,9 @@ export function ProjectModal({ p, onClose }: { p: Project | null; onClose: () =>
             </span>
           ))}
         </div>
+
+        {p.deepDive && <DeepDive d={p.deepDive} />}
+
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
           {p.links?.map((l) => (
             <a
